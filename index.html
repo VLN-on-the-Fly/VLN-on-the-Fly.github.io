@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VLN on the Fly — Onboard Vision-Language Navigation for Aerial Robots</title>
+<title>VLN on the Fly: Onboard Vision-Language Navigation for Aerial Robots</title>
 <meta name="description" content="A fully onboard, decoupled vision-language navigation stack for aerial robots: a quantized VLM for open-vocabulary grounding, EGO-Planner for 3D B-spline planning, and the RAPTOR policy for low-level control.">
 <meta property="og:title" content="VLN on the Fly">
 <meta property="og:description" content="An onboard vision-language navigation stack for aerial robots.">
@@ -38,8 +38,8 @@
   <!-- HERO (cover image; replace later) -->
   <section id="teaser" style="border-top:none">
     <figure class="hero">
-      <img src="assets/cover.png" alt="VLN on the Fly — teaser">
-      <figcaption>A language instruction is grounded to an image region, back-projected to a 3D goal, planned, and flown — every stage computed onboard.</figcaption>
+      <img src="assets/cover.png" alt="VLN on the Fly teaser">
+      <figcaption>A language instruction is grounded to an image region, back-projected to a 3D goal, planned, and flown, with every stage computed onboard.</figcaption>
     </figure>
   </section>
 
@@ -55,47 +55,47 @@
 
   <!-- WHAT IT DOES -->
   <section id="what">
-    <h2>Say it, and it flies — onboard</h2>
-    <p class="sub">No offboard compute, no prebuilt map, no per-object tuning.</p>
-    <p class="lead">Give the drone a plain-language instruction — <em>“go to the trash bin”</em> — and it finds the object in its camera, back-projects a 3D goal from depth, plans a collision-aware path, and tracks it to the target. A quantized vision-language model, a B-spline planner, and a learned flight policy run together in real time on the drone's Jetson Orin NX. Nothing leaves the aircraft.</p>
+    <h2>Say it, and it flies onboard</h2>
+    <p class="sub">The whole pipeline runs on the drone, with no offboard compute and no map prepared in advance.</p>
+    <p class="lead">Give the drone a plain-language instruction such as <em>“go to the trash bin,”</em> and it finds the object in its camera, turns that region into a 3D goal using depth, plans a collision-aware path, and tracks it to the target. A quantized vision-language model, a B-spline planner, and a learned flight policy run together in real time on the drone's Jetson Orin NX, so nothing leaves the aircraft.</p>
     <figure style="max-width:700px;margin:16px auto 0">
       <video class="framed" src="assets/demo.mp4" autoplay muted loop playsinline controls poster="assets/qualitative.png"></video>
-      <figcaption>One instruction — grounded, planned, and flown, every stage on the drone.</figcaption>
+      <figcaption>A single instruction, grounded, planned, and flown, with every stage on the drone.</figcaption>
     </figure>
   </section>
 
   <!-- HOW -->
   <section id="how">
     <h2>Three stages, one aircraft</h2>
-    <p class="sub">Grounding, planning, and control stay decoupled — so a mistake belongs to one module, not a black box.</p>
+    <p class="sub">Grounding, planning, and control stay separate, so a failure can be traced to a single module instead of a black box.</p>
     <figure>
       <img class="framed" src="assets/DiagramaIMAV2.png" alt="System overview of the VLN on the Fly stack">
-      <figcaption>A single world-frame goal flows through three replaceable stages, each checked by a finite-state safety layer before it acts. <strong>Ground it</strong> — a quantized Qwen-3.5-2B VLM names the image region holding the target, and depth turns it into a 3D goal. <strong>Plan it</strong> — EGO-Planner maps the space on the fly and returns a collision-aware B-spline. <strong>Fly it</strong> — the pretrained RAPTOR policy tracks the setpoints straight to motor commands, transferring across airframes with no retraining.</figcaption>
+      <figcaption>A single world-frame goal flows through three replaceable stages, each checked by a finite-state safety layer before it acts. First, a quantized Qwen-3.5-2B VLM names the image region holding the target, and depth turns it into a 3D goal. Next, EGO-Planner maps the space on the fly and returns a collision-aware B-spline. Finally, the pretrained RAPTOR policy tracks the setpoints straight to motor commands, transferring across airframes with no retraining.</figcaption>
     </figure>
   </section>
 
   <!-- GROUNDING -->
   <section id="grounding">
-    <h2>It grounds by name, not by pixel</h2>
-    <p class="sub">The VLM picks a coarse image region for the named object — open-vocabulary, cheap to validate, and robust to depth noise.</p>
+    <h2>Open-vocabulary grounding</h2>
+    <p class="sub">The VLM picks a coarse image region for the named object. This keeps the interface open-vocabulary, easy to validate, and robust to depth noise.</p>
     <figure>
       <img class="framed" src="assets/qualitative.png" alt="Qualitative grounding and planning result">
-      <figcaption>The model selects the region holding the referent (left); that cell becomes a back-projected 3D goal and a flown trajectory in the same view (right).</figcaption>
+      <figcaption>The model selects the region holding the target object (left). That cell becomes a back-projected 3D goal and a flown trajectory in the same view (right).</figcaption>
     </figure>
     <div class="grid2">
       <figure style="margin-top:6px">
         <img class="framed" src="assets/grounding_discrimination.png" alt="Region selected by the VLM per prompted referent">
       </figure>
       <div>
-        <p>Change only the object name over the same frames, and the model moves its choice — the chair to the left, the trash bin to the center — and it reports an object that isn't in the scene as <em>not visible</em>. It follows the word, not a fixed habit.</p>
+        <p>When only the object name changes over the same frames, the model moves its choice accordingly. It places the chair on the left and the trash bin in the center, and it reports an object that is not in the scene as <em>not visible</em>. The grounding follows the prompt rather than a fixed regional bias.</p>
       </div>
     </div>
   </section>
 
   <!-- CLUTTER -->
   <section id="clutter">
-    <h2>Built for clutter</h2>
-    <p class="sub">The same stack, unchanged, threads obstacles between take-off and the target — or safely refuses to commit.</p>
+    <h2>Navigation in clutter</h2>
+    <p class="sub">The same stack, without changes, plans around obstacles between take-off and the target, or safely declines to commit when grounding is uncertain.</p>
     <figure>
       <video class="framed" src="assets/demo_plan.mp4" autoplay muted loop playsinline controls></video>
       <figcaption><strong>Left:</strong> the onboard camera with the planned path and goal (★) reprojected into the image. <strong>Right:</strong> the planned B-spline (blue) and flown odometry (orange) in 3D, synced from trajectory generation to the first goal-reach.</figcaption>
@@ -104,8 +104,8 @@
 
   <!-- RESULTS -->
   <section id="results">
-    <h2>By the numbers</h2>
-    <p class="sub">15 onboard flights across three everyday objects, plus 6 cluttered-scene trials — every stage computed on the drone.</p>
+    <h2>Results</h2>
+    <p class="sub">15 onboard flights across three everyday objects, plus 6 cluttered-scene trials, all computed on the drone.</p>
     <div class="tablecard">
       <table>
         <caption>Open-vocabulary object-goal navigation (15 onboard flights).</caption>
@@ -132,8 +132,8 @@
 
   <!-- SETUP -->
   <section id="setup">
-    <h2>Where it flew</h2>
-    <p class="sub">A controlled indoor volume — open for the object-goal trials, cluttered for the obstacle-avoidance runs.</p>
+    <h2>Experimental setup</h2>
+    <p class="sub">A controlled indoor volume, open for the object-goal trials and cluttered for the obstacle-avoidance runs.</p>
     <div class="grid2">
       <figure><img class="framed" src="assets/setup_open.png" alt="Open-volume flight setup"><figcaption>(a) Open-volume object-goal trials.</figcaption></figure>
       <figure><img class="framed" src="assets/setup_clutter.png" alt="Cluttered path-planning setup"><figcaption>(b) Cluttered path-planning trials.</figcaption></figure>
