@@ -60,7 +60,7 @@ figcaption{color:var(--muted); font-size:.9rem; text-align:center; margin-top:10
 .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:6px 0 26px}
 @media(max-width:680px){ .stats{grid-template-columns:repeat(2,1fr)} }
 .stat{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px 12px; text-align:center}
-.stat b{display:block; font-size:1.7rem; line-height:1.1; color:var(--accent)}
+.stat b{display:block; font-size:1.25rem; line-height:1.15; color:var(--accent)}
 .stat span{color:var(--muted); font-size:.82rem}
 
 /* tables */
