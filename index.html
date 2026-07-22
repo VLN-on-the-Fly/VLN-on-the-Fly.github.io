@@ -102,32 +102,11 @@
     </figure>
   </section>
 
-  <!-- RESULTS -->
-  <section id="results">
-    <h2>Results</h2>
-    <p class="sub">15 onboard flights across three everyday objects, plus 6 cluttered-scene trials, all computed on the drone.</p>
-    <div class="tablecard">
-      <table>
-        <caption>Open-vocabulary object-goal navigation (15 onboard flights).</caption>
-        <thead><tr><th>Referent</th><th>Success rate ↑</th><th>Goal err. (cm) ↓</th><th>Track err. (cm) ↓</th><th>Avg. GPU (%)</th></tr></thead>
-        <tbody>
-          <tr><td>Trash bin</td><td>1.00</td><td>0.00</td><td>34.96</td><td>42.2</td></tr>
-          <tr><td>Chair</td><td>0.80</td><td>10.07</td><td>26.13</td><td>37.3</td></tr>
-          <tr><td>Fire extinguisher</td><td>0.80</td><td>7.08</td><td>37.64</td><td>38.4</td></tr>
-          <tr><td>Overall</td><td>0.87</td><td>5.72</td><td>32.91</td><td>39.3</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="tablecard">
-      <table>
-        <caption>Onboard VLM inference timing (Jetson Orin NX, N = 1865 queries).</caption>
-        <thead><tr><th>Stage</th><th>Median</th><th>95th pct.</th><th>Max</th></tr></thead>
-        <tbody>
-          <tr><td>Time-to-first-token</td><td>0.60 s</td><td>0.66 s</td><td>0.72 s</td></tr>
-          <tr><td>Total inference</td><td>0.79 s</td><td>0.88 s</td><td>1.12 s</td></tr>
-        </tbody>
-      </table>
-    </div>
+  <!-- SAFETY -->
+  <section id="safety">
+    <h2>Safe by design</h2>
+    <p class="sub">Every goal is checked before the drone acts, and the stack would rather hold position than fly an unsafe approach.</p>
+    <p class="lead">A finite-state safety layer sits between grounding and flight. It accepts a goal only after the model agrees on the same region across several consecutive frames, and it rejects any goal that falls outside the operating bounds or lacks valid depth. If nothing clears those checks, the drone stays where it is and waits for the next reading instead of committing to a guess. The planner adds a second gate, running a trajectory only when it is collision-free on the current occupancy map. In the cluttered trials, this is what kept the flights safe: when the target left the field of view or the grounding was uncertain, the stack simply declined to commit, and no collision occurred.</p>
   </section>
 
   <!-- SETUP -->
