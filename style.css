@@ -79,5 +79,19 @@ pre{background:var(--surface); border:1px solid var(--border); border-radius:12p
 .copybtn{cursor:pointer; font-size:.85rem; padding:6px 12px; border-radius:8px;
   border:1px solid var(--border); background:var(--surface); color:var(--ink)}
 
+/* before/after compare slider */
+.compare{position:relative; max-width:660px; margin:0 auto; aspect-ratio:4/3; border-radius:12px;
+  overflow:hidden; border:1px solid var(--border); user-select:none; touch-action:none; cursor:ew-resize; outline:none}
+.compare:focus-visible{box-shadow:0 0 0 3px var(--accent-soft)}
+.compare img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; border-radius:0; pointer-events:none}
+.compare .top{clip-path:inset(0 50% 0 0)}
+.compare .handle{position:absolute; top:0; bottom:0; left:50%; width:2px; background:#fff; transform:translateX(-1px); box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.compare .grip{position:absolute; top:50%; left:0; transform:translate(-50%,-50%); width:38px; height:38px;
+  border-radius:50%; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.4); display:flex; align-items:center; justify-content:center;
+  color:#111; font-size:13px; font-weight:700; letter-spacing:1px}
+.compare .lbl{position:absolute; top:10px; padding:4px 11px; border-radius:999px; background:rgba(15,17,22,.82);
+  color:#fff; font-size:.82rem; font-weight:600}
+.compare .lbl.l{left:10px} .compare .lbl.r{right:10px}
+
 footer{padding:34px 0 60px; text-align:center; color:var(--muted); font-size:.88rem; border-top:1px solid var(--border)}
 .small{font-size:.86rem; color:var(--muted)}

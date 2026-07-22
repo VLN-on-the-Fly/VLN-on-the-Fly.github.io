@@ -82,14 +82,14 @@
       <img class="framed" src="assets/qualitative.png" alt="Qualitative grounding and planning result">
       <figcaption>The model selects the region holding the target object (left). That cell becomes a back-projected 3D goal and a flown trajectory in the same view (right).</figcaption>
     </figure>
-    <div class="grid2">
-      <figure style="margin-top:6px">
-        <img class="framed" src="assets/grounding_discrimination.png" alt="Region selected by the VLM per prompted referent">
-      </figure>
-      <div>
-        <p>When only the object name changes over the same frames, the model moves its choice accordingly. It places the chair on the left and the trash bin in the center, and it reports an object that is not in the scene as <em>not visible</em>. The grounding follows the prompt rather than a fixed regional bias.</p>
-      </div>
+    <div class="compare" id="cmp" tabindex="0" role="slider" aria-label="Drag to change the instruction between two objects" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+      <img class="bot" src="assets/slider_bin.png" alt="The model grounding the trash bin to the center region">
+      <img class="top" src="assets/slider_chair.png" alt="The model grounding the chair to the left region">
+      <div class="handle"><span class="grip">‹ ›</span></div>
+      <span class="lbl l">“chair”</span>
+      <span class="lbl r">“trash bin”</span>
     </div>
+    <p class="small" style="text-align:center;margin-top:12px">Drag the divider. The scene stays the same, but naming a different object moves the region the model selects.</p>
   </section>
 
   <!-- CLUTTER -->
@@ -159,6 +159,23 @@ function copyBib(){
     setTimeout(()=>b.textContent='Copy',1600);
   });
 }
+(function(){
+  const c=document.getElementById('cmp'); if(!c) return;
+  const top=c.querySelector('.top'), handle=c.querySelector('.handle');
+  let x=50, drag=false;
+  function set(v){ x=Math.max(0,Math.min(100,v));
+    top.style.clipPath='inset(0 '+(100-x)+'% 0 0)'; handle.style.left=x+'%';
+    c.setAttribute('aria-valuenow',Math.round(x)); }
+  function at(e){ const r=c.getBoundingClientRect();
+    const cx=(e.touches?e.touches[0].clientX:e.clientX)-r.left; set(cx/r.width*100); }
+  c.addEventListener('pointerdown',e=>{ drag=true; try{c.setPointerCapture(e.pointerId);}catch(_){} at(e); });
+  c.addEventListener('pointermove',e=>{ if(drag) at(e); });
+  window.addEventListener('pointerup',()=>{ drag=false; });
+  c.addEventListener('keydown',e=>{
+    if(e.key==='ArrowLeft'){ set(x-4); e.preventDefault(); }
+    if(e.key==='ArrowRight'){ set(x+4); e.preventDefault(); } });
+  set(50);
+})();
 </script>
 </body>
 </html>
