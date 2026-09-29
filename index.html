@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VLN on the Fly: Onboard Vision-Language Navigation for Aerial Robots</title>
-<meta name="description" content="A fully onboard, decoupled vision-language navigation stack for aerial robots: a quantized VLM for open-vocabulary grounding, EGO-Planner for 3D B-spline planning, and the RAPTOR policy for low-level control.">
+<meta name="description" content="VLN on the Fly studies how drones can navigate toward objects named in language instructions. Explore the onboard system, indoor flight experiments, and IMAV 2026 presentation.">
 <meta property="og:title" content="VLN on the Fly">
-<meta property="og:description" content="An onboard vision-language navigation stack for aerial robots.">
+<meta property="og:description" content="Language-guided drone navigation with onboard computation. Flight experiments, paper, code, and our IMAV 2026 presentation.">
 <meta property="og:image" content="assets/cover.png">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="stylesheet" href="style.css">
@@ -22,100 +22,98 @@
       Pedro H. V. de Freitas, Lucas Kido, Guilherme Sonego, Ricardo V. Godoy, Marcelo Becker
     </p>
     <p class="affil">University of São Paulo (USP), Brazil</p>
-    <p class="note"><sup>*</sup>Equal contribution &nbsp;·&nbsp; <sup>†</sup>Corresponding author: marcotayar@usp.br</p>
-    <p class="venue">International Micro Air Vehicle Conference (IMAV) 2026</p>
+    <p class="note"><sup>*</sup>Equal contribution</p>
+    <p class="note"><sup>†</sup>Corresponding author: <a href="mailto:marcotayar@usp.br">marcotayar@usp.br</a></p>
+    <p class="venue">Presented at the International Micro Air Vehicle Conference (IMAV), 2026.</p>
 
     <div class="links">
       <a class="btn" href="https://arxiv.org/abs/2609.20191"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg> Paper</a>
       <a class="btn" href="https://github.com/peDrontonio/VLNontheFly"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> Code</a>
-      <span class="btn disabled"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg> Video <em>(soon)</em></span>
+      <a class="btn" href="https://www.youtube.com/watch?v=Om3usIreKDk">Flight video</a>
+      <a class="btn" href="https://www.youtube.com/watch?v=aUoDo1FOdqA&amp;t=5735s">IMAV talk</a>
+      <a class="btn" href="imav26_vln_on_the_fly.pdf">Slides (PDF)</a>
     </div>
   </div>
 </header>
 
 <main class="wrap">
 
-  <!-- HERO (cover image; replace later) -->
-  <section id="teaser" style="border-top:none">
-    <figure class="hero">
-      <img src="assets/cover.png" alt="VLN on the Fly teaser">
-      <figcaption>A language instruction is grounded to an image region, back-projected to a 3D goal, planned, and flown, with every stage computed onboard.</figcaption>
-    </figure>
-  </section>
-
-  <!-- KEY NUMBERS -->
-  <section>
-    <div class="stats">
-      <div class="stat"><b>Onboard</b><span>every stage runs on the drone</span></div>
-      <div class="stat"><b>Open-vocabulary</b><span>name objects in plain language</span></div>
-      <div class="stat"><b>Collision-free</b><span>plans around clutter, or safely holds</span></div>
-      <div class="stat"><b>Zero-shot</b><span>one control policy, any quadrotor</span></div>
-    </div>
-  </section>
-
-  <!-- WHAT IT DOES -->
   <section id="what">
-    <h2>Say it, and it flies onboard</h2>
-    <p class="sub">The whole pipeline runs on the drone, with no offboard compute and no map prepared in advance.</p>
-    <p class="lead">Give the drone a plain-language instruction such as <em>“go to the trash bin,”</em> and it finds the object in its camera, turns that region into a 3D goal using depth, plans a collision-aware path, and tracks it to the target. A quantized vision-language model, a B-spline planner, and a learned flight policy run together in real time on the drone's Jetson Orin NX, so nothing leaves the aircraft.</p>
-    <figure style="max-width:700px;margin:16px auto 0">
-      <video class="framed" src="assets/demo.mp4" autoplay muted loop playsinline controls poster="assets/qualitative.png"></video>
-      <figcaption>A single instruction, grounded, planned, and flown, with every stage on the drone.</figcaption>
+    <h2>Overview</h2>
+    <p class="lead">VLN on the Fly allows a drone to navigate toward an object named in a language instruction, such as <em>“go to the trash bin.”</em> It uses camera images to locate the object, estimates its position from depth measurements, and plans and follows a path toward it. The navigation and control computations run onboard. We evaluated the system in indoor flight experiments with and without obstacles, using an external motion-capture system for position and orientation estimates.</p>
+  </section>
+
+  <section id="flight-video">
+    <h2>Flight demonstration</h2>
+    <figure>
+      <iframe class="video-embed" src="https://www.youtube-nocookie.com/embed/Om3usIreKDk" title="VLN on the Fly: test flights" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <figcaption>Footage from our indoor test flights. <a href="https://www.youtube.com/watch?v=Om3usIreKDk">Watch on YouTube</a>.</figcaption>
     </figure>
   </section>
 
   <!-- HOW -->
   <section id="how">
-    <h2>Three stages, one aircraft</h2>
-    <p class="sub">Grounding, planning, and control stay separate, so a failure can be traced to a single module instead of a black box.</p>
+    <h2>How it works</h2>
+    <p class="sub">The system separates finding the object, planning a path, and controlling the drone.</p>
     <figure>
       <img class="framed" src="assets/DiagramaIMAV2.png" alt="System overview of the VLN on the Fly stack">
-      <figcaption>A single world-frame goal flows through three replaceable stages, each checked by a finite-state safety layer before it acts. First, a quantized Qwen-3.5-2B VLM names the image region holding the target, and depth turns it into a 3D goal. Next, EGO-Planner maps the space on the fly and returns a collision-aware B-spline. Finally, the pretrained RAPTOR policy tracks the setpoints straight to motor commands, transferring across airframes with no retraining.</figcaption>
+      <figcaption>Camera images and depth measurements provide a goal for the planner. The controller follows the planned path, while a supervisor checks goals before allowing flight.</figcaption>
     </figure>
+    <ol class="method">
+      <li><strong>Find the object.</strong> A quantized Qwen-3.5-2B vision-language model selects one of nine image regions. Depth measurements from that region give an estimated 3D goal.</li>
+      <li><strong>Plan a path.</strong> EGO-Planner builds a local map from depth measurements and produces a smooth path that accounts for obstacles.</li>
+      <li><strong>Follow the path.</strong> The pretrained RAPTOR policy converts the planned position setpoints into motor commands. It runs on the flight controller, without retraining for our airframe.</li>
+    </ol>
+    <p class="lead">The vision-language model and planner run on a Jetson Orin NX. Keeping the stages separate lets us inspect the selected object region, estimated goal, and planned path when a flight does not reach its target.</p>
   </section>
 
   <!-- GROUNDING -->
   <section id="grounding">
-    <h2>Open-vocabulary grounding</h2>
-    <p class="sub">The VLM picks a coarse image region for the named object. This keeps the interface open-vocabulary, easy to validate, and robust to depth noise.</p>
-    <figure>
-      <img class="framed" src="assets/qualitative.png" alt="Qualitative grounding and planning result">
-      <figcaption>The model selects the region holding the target object (left). That cell becomes a back-projected 3D goal and a flown trajectory in the same view (right).</figcaption>
-    </figure>
-    <div class="compare" id="cmp" tabindex="0" role="slider" aria-label="Drag to change the instruction between two objects" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+    <h2>Finding the requested object</h2>
+    <p class="sub">The model selects an image region for the named object instead of predicting an exact pixel.</p>
+    <div class="compare" id="cmp" tabindex="0" role="slider" aria-label="Comparison divider between chair and trash-bin instructions" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-describedby="compare-help">
       <img class="bot" src="assets/slider_bin.png" alt="The model grounding the trash bin to the center region">
       <img class="top" src="assets/slider_chair.png" alt="The model grounding the chair to the left region">
       <div class="handle"><span class="grip">‹ ›</span></div>
       <span class="lbl l">“chair”</span>
       <span class="lbl r">“trash bin”</span>
     </div>
-    <p class="small" style="text-align:center;margin-top:12px">Drag the divider. The scene stays the same, but naming a different object moves the region the model selects.</p>
+    <p class="small media-note" id="compare-help">Drag the divider or use the left and right arrow keys. The camera image is the same; changing the requested object changes the selected region.</p>
   </section>
 
   <!-- CLUTTER -->
   <section id="clutter">
-    <h2>Navigation in clutter</h2>
-    <p class="sub">The same stack, without changes, plans around obstacles between take-off and the target, or safely declines to commit when grounding is uncertain.</p>
+    <h2>Flights around obstacles</h2>
+    <p class="sub">We also tested the same system with obstacles between the take-off position and the requested object.</p>
     <figure>
-      <video class="framed" src="assets/demo_plan.mp4" autoplay muted loop playsinline controls></video>
-      <figcaption><strong>Left:</strong> the onboard camera with the planned path and goal (★) reprojected into the image. <strong>Right:</strong> the planned B-spline (blue) and flown odometry (orange) in 3D, synced from trajectory generation to the first goal-reach.</figcaption>
+      <video class="framed" src="assets/demo_plan.mp4" muted loop playsinline controls preload="metadata"></video>
+      <figcaption><strong>Left:</strong> the onboard camera view with the planned path and goal. <strong>Right:</strong> the planned path in blue and the recorded flight path in orange.</figcaption>
     </figure>
-  </section>
-
-  <!-- SAFETY -->
-  <section id="safety">
-    <h2>Safe by design</h2>
-    <p class="sub">Every goal is checked before the drone acts, and the stack would rather hold position than fly an unsafe approach.</p>
-    <p class="lead">A finite-state safety layer sits between grounding and flight. It accepts a goal only after the model agrees on the same region across several consecutive frames, and it rejects any goal that falls outside the operating bounds or lacks valid depth. If nothing clears those checks, the drone stays where it is and waits for the next reading instead of committing to a guess. The planner adds a second gate, running a trajectory only when it is collision-free on the current occupancy map. In the cluttered trials, this is what kept the flights safe: when the target left the field of view or the grounding was uncertain, the stack simply declined to commit, and no collision occurred.</p>
   </section>
 
   <!-- SETUP -->
   <section id="setup">
     <h2>Experimental setup</h2>
-    <p class="sub">A controlled indoor volume, open for the object-goal trials and cluttered for the obstacle-avoidance runs.</p>
+    <p class="sub">Flights took place in a controlled indoor space, using a RealSense D435i depth camera and OptiTrack motion capture for position and orientation estimates.</p>
     <div class="grid2">
-      <figure><img class="framed" src="assets/setup_open.png" alt="Open-volume flight setup"><figcaption>(a) Open-volume object-goal trials.</figcaption></figure>
-      <figure><img class="framed" src="assets/setup_clutter.png" alt="Cluttered path-planning setup"><figcaption>(b) Cluttered path-planning trials.</figcaption></figure>
+      <figure><img class="framed" src="assets/setup_open.png" alt="Drone and target objects in the open indoor flight area" loading="lazy"><figcaption>Object-navigation trials in the open flight area.</figcaption></figure>
+      <figure><img class="framed" src="assets/setup_clutter.png" alt="Indoor flight area with obstacles between the drone and target" loading="lazy"><figcaption>Additional trials with obstacles along the approach.</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="safety">
+    <h2>Checks before flight</h2>
+    <p class="lead">A goal is accepted only after three consecutive predictions select the same image region above the confidence threshold. The goal must also have valid depth and lie within the configured operating bounds. The planner checks the path against its local obstacle map before execution. When no goal passes the checks, the drone holds position and waits for a valid goal.</p>
+    <h3>Limitations</h3>
+    <p class="lead">These checks are not a general safety guarantee. Our evaluation used a single indoor motion-capture space and constrained flight altitude. The model sees only the current camera image, so it cannot locate an object outside the field of view and can mistake another object for an absent target. Limited depth range and invalid measurements can also affect the goal estimate. The <a href="assets/paper.pdf">paper</a> describes the observed failures and experimental limits.</p>
+  </section>
+
+  <section id="presentation">
+    <h2>IMAV 2026 presentation</h2>
+    <p class="sub">We presented this work at IMAV 2026. Our talk begins at 1:35:35 in the conference recording.</p>
+    <div class="links">
+      <a class="btn" href="https://www.youtube.com/watch?v=aUoDo1FOdqA&amp;t=5735s">Watch the IMAV talk from 1:35:35</a>
+      <a class="btn ghost" href="imav26_vln_on_the_fly.pdf" download>Download slides (PDF)</a>
     </div>
   </section>
 
@@ -146,8 +144,7 @@
 
 <footer>
   <div class="wrap">
-    <p>Website for <em>VLN on the Fly</em> · University of São Paulo.
-       Page design adapted from the academic project-page style.</p>
+    <p><em>VLN on the Fly</em><br>University of São Paulo, Brazil</p>
   </div>
 </footer>
 
